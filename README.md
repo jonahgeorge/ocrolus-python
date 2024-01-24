@@ -4,13 +4,9 @@ A Python client library for the [Ocrolus REST API](https://docs.ocrolus.com).
 
 ## Installing
 
-TODO
-
-<!--
 ```sh
-pip install ocrolus-python
+pip install 'ocrolus @ git+https://github.com/jonahgeorge/ocrolus-python.git'
 ```
--->
 
 ## Usage
 

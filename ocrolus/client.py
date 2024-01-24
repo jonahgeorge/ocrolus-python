@@ -1,39 +1,6 @@
 from requests import get, post
-from typing import BinaryIO, TypedDict
+from typing import BinaryIO, Callable, TypedDict
 from typing_extensions import NotRequired, Required
-
-
-class AuthClient:
-    """
-    A client for the Ocrolus Auth API.
-
-    https://docs.ocrolus.com/reference/ocrolus-api-intro
-    """
-
-    def __init__(self, base_url: str = "https://auth.ocrolus.com"):
-        self.base_url = base_url
-
-    def _headers(self):
-        return {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-        }
-
-    class GrantAuthTokenRequest(TypedDict):
-        grant_type: Required[str]
-        audience: NotRequired[str]
-        client_id: Required[str]
-        client_secret: Required[str]
-
-    def grant_auth_token(self, req: GrantAuthTokenRequest):
-        """
-        Retrieve a JWT-compliant access token for use with all other endpoints.
-
-        https://docs.ocrolus.com/reference/grant-authentication-token
-        """
-
-        res = post(f"{self.base_url}/oauth/token", headers=self._headers(), json=req)
-        return res.json()
 
 
 class CreateBookRequest(TypedDict):
@@ -210,20 +177,24 @@ class UploadDocumentRequest(TypedDict):
     """
 
 
-class ApiClient:
+class Client:
     """
     A client for the Ocrolus API.
 
     https://docs.ocrolus.com/reference/ocrolus-api-intro
     """
 
-    def __init__(self, access_token: str, base_url: str = "https://api.ocrolus.com"):
-        self.access_token = access_token
+    def __init__(
+        self,
+        bearer_token_provider: Callable[[], str],
+        base_url: str = "https://api.ocrolus.com",
+    ):
+        self.bearer_token_provider = bearer_token_provider
         self.base_url = base_url
 
     def _headers(self):
         return {
-            "Authorization": f"Bearer {self.access_token}",
+            "Authorization": f"Bearer {self.bearer_token_provider()}",
         }
 
     def create_book(self, req: CreateBookRequest):
@@ -293,5 +264,10 @@ class ApiClient:
         https://docs.ocrolus.com/reference/upload-document
         """
 
-        res = post(f"{self.base_url}/v1/book/upload", headers=self._headers(), data=req, files={ "upload": upload })
+        res = post(
+            f"{self.base_url}/v1/book/upload",
+            headers=self._headers(),
+            data=req,
+            files={"upload": upload},
+        )
         return res.json()

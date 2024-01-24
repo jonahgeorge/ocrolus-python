@@ -1,0 +1,5 @@
+ocrolus.egg-info/
+build/
+.mypy_cache
+__pycache__
+integration_test.py

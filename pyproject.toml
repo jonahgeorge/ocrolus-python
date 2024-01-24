@@ -1,0 +1,28 @@
+[project]
+name = "ocrolus"
+version = "0.0.1"
+description = ""
+authors = [{ name = "Jonah George" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["requests==2.31.0"]
+
+[project.optional-dependencies]
+test = ["types-requests"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

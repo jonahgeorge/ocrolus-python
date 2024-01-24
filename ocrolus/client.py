@@ -40,7 +40,7 @@ class DeleteBookRequest(TypedDict):
     https://docs.ocrolus.com/reference/delete-a-book
     """
 
-    book_id: NotRequired[str]
+    book_id: NotRequired[int]
     """
     The PK of the Book you'd like to delete. Mutually exclusive with `book_uuid`.
     """
@@ -61,7 +61,7 @@ class UpdateBookRequest(TypedDict):
     The unique identifier of the Book you want to configure. Mutually exclusive with `pk`.
     """
 
-    pk: NotRequired[str]
+    pk: NotRequired[int]
     """
     The PK of the Book you want to configure. Mutually exclusive with `book_uuid`.
     """
@@ -102,7 +102,7 @@ class BookInfoRequest(TypedDict):
     The unique identifier of the Book whose information you want to retrieve. Mutually exclusive with `book_pk`.
     """
 
-    pk: NotRequired[str]
+    pk: NotRequired[int]
     """
     Unique primary key (pk) of the Book whose information you want to retrieve. Mutually exclusive with `book_uuid`.
     """
@@ -149,7 +149,7 @@ class BookStatusRequest(TypedDict):
     The unique identifier of the Book whose status you want to retrieve. Mutually exclusive with book_pk.
     """
 
-    pk: NotRequired[str]
+    pk: NotRequired[int]
     """
     Unique primary key (pk) of the Book whose status you want to retrieve. Mutually exclusive with book_uuid.
     """
@@ -161,7 +161,7 @@ class UploadDocumentRequest(TypedDict):
     The unique identifier of the Book that the uploaded Document will be saved to. Mutually exclusive with pk.
     """
 
-    pk: NotRequired[str]
+    pk: NotRequired[int]
     """
     The PK of the Book that the uploaded Document will be saved to. Mutually exclusive with book_uuid.
     """
@@ -193,9 +193,7 @@ class Client:
         self.base_url = base_url
 
     def _headers(self):
-        return {
-            "Authorization": f"Bearer {self.bearer_token_provider()}",
-        }
+        return {"Authorization": f"Bearer {self.bearer_token_provider()}"}
 
     def create_book(self, req: CreateBookRequest):
         """

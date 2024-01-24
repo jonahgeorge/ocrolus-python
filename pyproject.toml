@@ -6,7 +6,7 @@ authors = [{ name = "Jonah George" }]
 license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["requests==2.31.0"]
+dependencies = ["requests==2.31.0", "typing-extensions"]
 
 [project.optional-dependencies]
 test = ["types-requests"]

@@ -30,8 +30,10 @@ class BearerTokenProvider:
                     "client_secret": self.client_secret,
                 }
             )
+            response.raise_for_status()
 
-            self.access_token = str(response["access_token"])
-            self.expires_at = datetime.now() + timedelta(seconds=response["expires_in"])
+            body = response.json()
+            self.access_token = str(body["access_token"])
+            self.expires_at = datetime.now() + timedelta(seconds=body["expires_in"])
 
         return self.access_token

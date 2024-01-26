@@ -1,4 +1,4 @@
-from requests import get, post
+from requests import Response, get, post
 from typing import BinaryIO, Callable, TypedDict
 from typing_extensions import NotRequired, Required
 
@@ -195,55 +195,50 @@ class Client:
     def _headers(self):
         return {"Authorization": f"Bearer {self.bearer_token_provider()}"}
 
-    def create_book(self, req: CreateBookRequest):
+    def create_book(self, req: CreateBookRequest) -> Response:
         """
         Create a Book that you can use to group related Documents.
 
         https://docs.ocrolus.com/reference/create-a-book
         """
 
-        res = post(f"{self.base_url}/v1/book/add", headers=self._headers(), json=req)
-        return res.json()
+        return post(f"{self.base_url}/v1/book/add", headers=self._headers(), json=req)
 
-    def delete_book(self, req: DeleteBookRequest):
+    def delete_book(self, req: DeleteBookRequest) -> Response:
         """
         Delete a Book that you no longer need.
 
         https://docs.ocrolus.com/reference/delete-a-book
         """
 
-        res = post(f"{self.base_url}/v1/book/remove", headers=self._headers(), json=req)
-        return res.json()
+        return post(f"{self.base_url}/v1/book/remove", headers=self._headers(), json=req)
 
-    def update_book(self, req: UpdateBookRequest):
+    def update_book(self, req: UpdateBookRequest) -> Response:
         """
         Configure various properties of a Book.
 
         https://docs.ocrolus.com/reference/update-book
         """
 
-        res = post(f"{self.base_url}/v1/book/update", headers=self._headers(), json=req)
-        return res.json()
+        return post(f"{self.base_url}/v1/book/update", headers=self._headers(), json=req)
 
-    def book_info(self, req: BookInfoRequest):
+    def book_info(self, req: BookInfoRequest) -> Response:
         """
         Retrieve details of a Book, including uploaded Documents, bank account information, and transaction periods.
 
         https://docs.ocrolus.com/reference/book-info
         """
 
-        res = get(f"{self.base_url}/v1/book/info", headers=self._headers(), json=req)
-        return res.json()
+        return get(f"{self.base_url}/v1/book/info", headers=self._headers(), json=req)
 
-    def book_list(self, req: BookListRequest = {}):
+    def book_list(self, req: BookListRequest = {}) -> Response:
         """
         Retrieve a list of all Books available to the current user.
 
         https://docs.ocrolus.com/reference/book-list
         """
 
-        res = get(f"{self.base_url}/v1/books", headers=self._headers(), json=req)
-        return res.json()
+        return get(f"{self.base_url}/v1/books", headers=self._headers(), json=req)
 
     def book_status(self, req: BookStatusRequest):
         """
@@ -252,20 +247,18 @@ class Client:
         https://docs.ocrolus.com/reference/book-status
         """
 
-        res = get(f"{self.base_url}/v1/books", headers=self._headers(), json=req)
-        return res.json()
+        return get(f"{self.base_url}/v1/books", headers=self._headers(), json=req)
 
-    def upload_document(self, req: UploadDocumentRequest, upload: BinaryIO):
+    def upload_document(self, req: UploadDocumentRequest, upload: BinaryIO) -> Response:
         """
         Upload a PDF file to a Book for processing.
 
         https://docs.ocrolus.com/reference/upload-document
         """
 
-        res = post(
+        return post(
             f"{self.base_url}/v1/book/upload",
             headers=self._headers(),
             data=req,
             files={"upload": upload},
         )
-        return res.json()

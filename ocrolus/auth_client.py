@@ -1,4 +1,4 @@
-from requests import post
+from requests import Response, post
 from typing import TypedDict
 from typing_extensions import NotRequired, Required
 
@@ -47,12 +47,11 @@ class AuthClient:
             "Content-Type": "application/json",
         }
 
-    def grant_auth_token(self, req: GrantAuthTokenRequest):
+    def grant_auth_token(self, req: GrantAuthTokenRequest) -> Response:
         """
         Retrieve a JWT-compliant access token for use with all other endpoints.
 
         https://docs.ocrolus.com/reference/grant-authentication-token
         """
 
-        res = post(f"{self.base_url}/oauth/token", headers=self._headers(), json=req)
-        return res.json()
+        return post(f"{self.base_url}/oauth/token", headers=self._headers(), json=req)
